@@ -2,6 +2,7 @@ package battleplan
 
 import model.Point
 import model.Ship
+import model.ShotResult
 
 class BattlePlanServiceImpl : BattlePlanService {
     override fun createBoard(size: Int): Boolean {

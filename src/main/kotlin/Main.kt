@@ -1,7 +1,9 @@
 
 import battleplan.BattlePlanServiceImpl
 import gameplay.GameplayServiceImpl
+import gui.GuiService
 import model.Player
+import kotlin.random.Random
 
 
 fun main(args: Array<String>) {
@@ -17,14 +19,23 @@ fun main(args: Array<String>) {
 
 
     val battlePlanServiceImpl = BattlePlanServiceImpl()
+    val guiService = GuiService()
     val gameplayService = GameplayServiceImpl(players, battlePlanServiceImpl)
 
     gameplayService.startGame()
-
+    guiService.printBanner()
     while(true) {
-        // TODO probably return shotResult from playerTurn or shotResult, with current player
-        val playerOnTurn = gameplayService.playerTurn();
+        val playerOnTurn = gameplayService.whoIsOnTurn()
 
+        guiService.printWhoPlays(playerOnTurn)
+
+        if (playerOnTurn.isNPC) {
+            guiService.printAIIsTargeting()
+            Thread.sleep(Random.nextLong(2000, 6000))
+        }
+        // TODO probably return shotResult from playerTurn or shotResult, with current player
+        val turnResult = gameplayService.playerTurn()
+        guiService.printShot(turnResult)
 
     }
 }

@@ -2,7 +2,6 @@ package battleplan
 
 import model.Point
 import model.Ship
-import model.Shot
 import model.ShotResult
 
 interface BattlePlanService {

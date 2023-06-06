@@ -20,9 +20,18 @@ class GuiService {
         println("This action is invalid, try again.")
     }
 
+    fun printAIIsTargeting() {
+        println("AI is targeting, please wait...")
+    }
+
     fun printShot(result: ShotResult) {
         val shotResultMessage = getShotResultMessage(result)
         println(shotResultMessage)
+    }
+
+    fun clearConsole() {
+        println("\\033[H\\033[2J")
+        System.out.flush()
     }
 
     private fun getShotResultMessage(result: ShotResult): String {

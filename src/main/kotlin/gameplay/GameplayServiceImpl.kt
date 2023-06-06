@@ -21,22 +21,24 @@ class GameplayServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override fun playerTurn(): Player {
+    override fun playerTurn(): ShotResult {
         val shotCoordinates = when (playerOnTurn.isNPC) {
             true -> createRandomPoint()
             false -> createPointFromInput(readln())
         }
 
-        return when (battlePlanService.shot(playerOnTurn.name, shotCoordinates)) {
+        return when (val result = battlePlanService.shot(playerOnTurn.name, shotCoordinates)) {
             ShotResult.MISS -> {
                 playerOnTurn = players.filterNot { player -> player == playerOnTurn }.first()
-                playerOnTurn
+                result
             }
 
-            else -> {
-                playerOnTurn
-            }
+            else -> result
         }
+    }
+
+    override fun whoIsOnTurn(): Player {
+        return playerOnTurn
     }
 
     private fun createPointFromInput(stringInput: String): Point {
