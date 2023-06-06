@@ -58,7 +58,7 @@ fun main(args: Array<String>) {
         }
         // TODO probably return shotResult from playerTurn or shotResult, with current player
         val turnResult = gameplayService.playerTurn()
-        guiService.printShot(turnResult)
+        guiService.printShot(playerOnTurn, turnResult)
     }
 }
 
