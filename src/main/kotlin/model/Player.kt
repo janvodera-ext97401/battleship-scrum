@@ -1,4 +1,4 @@
-package kotlin.model
+package model
 
 data class Player(
     val name: String,

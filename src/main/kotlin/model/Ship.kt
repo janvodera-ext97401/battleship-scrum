@@ -1,4 +1,4 @@
-package kotlin.model
+package model
 
 data class Ship(
     val position: Point,

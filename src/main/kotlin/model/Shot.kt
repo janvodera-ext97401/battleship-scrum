@@ -1,6 +1,6 @@
-package kotlin.model
+package model
 
-data class Shots(
+data class Shot(
     val position: Point,
     val result: ShotResult,
     val ownerName: String
