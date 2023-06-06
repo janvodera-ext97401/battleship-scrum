@@ -25,11 +25,10 @@ fun main(args: Array<String>) {
     gameplayService.startGame()
 
     while(true) {
-        val player = gameplayService.whoIsOnTurn();
-        val stringInput = readLine()!!
-        val point = createPointFrom (stringInput)
+        // TODO probably return shotResult from playerTurn or shotResult, with current player
+        val playerOnTurn = gameplayService.playerTurn();
 
-        println(point)
+
     }
 }
 

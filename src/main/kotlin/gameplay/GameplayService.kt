@@ -6,5 +6,4 @@ interface GameplayService {
     fun startGame()
     fun endGame()
     fun playerTurn(): Player
-    fun whoIsOnTurn(): Player
 }
