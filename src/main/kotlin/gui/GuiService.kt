@@ -2,6 +2,7 @@ package gui
 
 import model.Player
 import model.ShotResult
+import kotlin.random.Random
 
 class GuiService {
     fun printBanner() {
@@ -24,8 +25,15 @@ class GuiService {
         println("AI is targeting, please wait...")
     }
 
-    fun printShot(result: ShotResult) {
+    fun printShot(player: Player, result: ShotResult) {
         val shotResultMessage = getShotResultMessage(result)
+        println(this.getRandomAttackWeaponText())
+        if (player.isNPC) {
+            println("<–––––––––––––––")
+        } else {
+            println("––––––––––––––>")
+        }
+        Thread.sleep(2000)
         println(shotResultMessage)
     }
 
@@ -45,7 +53,15 @@ class GuiService {
                     " | _ \\| (_) || (_) || |\\/| | \n" +
                     " |___/ \\___/  \\___/ |_|  |_| \n" +
                     "                             "
-            ShotResult.SUNK -> " (        )  (    (      (              )      )      (      \n" +
+            ShotResult.SUNK -> "          _ ._  _ , _ ._\n" +
+                    "        (_ ' ( `  )_  .__)\n" +
+                    "      ( (  (    )   `)  ) _)\n" +
+                    "     (__ (_   (_ . _) _) ,__)\n" +
+                    "         `~~`\\ ' . /`~~`\n" +
+                    "              ;   ;\n" +
+                    "              /   \\\n" +
+                    "_____________/_ __ \\_____________\n\n" +
+                " (        )  (    (      (              )      )      (      \n" +
                     " )\\ )  ( /(  )\\ ) )\\ )   )\\ )        ( /(   ( /(      )\\ )   \n" +
                     "(()/(  )\\())(()/((()/(  (()/(    (   )\\())  )\\()) (  (()/(   \n" +
                     " /(_))((_)\\  /(_))/(_))  /(_))   )\\ ((_)\\ |((_)\\  )\\  /(_))  \n" +
@@ -61,4 +77,9 @@ class GuiService {
         }
     }
 
+    private fun getRandomAttackWeaponText(): String {
+        val texts = arrayOf("Missile is flying…", "Torpedo fired!", "Attack!")
+        val randomIndex = Random.nextInt(texts.size)
+        return texts[randomIndex]
+    }
 }
