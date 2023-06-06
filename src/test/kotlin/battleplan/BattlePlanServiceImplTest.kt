@@ -75,7 +75,7 @@ class BattlePlanServiceImplTest {
         battlePlanService.addShip(ship)
 
         // When
-        val result = battlePlanService.shot("Player1", Point(0, 0))
+        val result = battlePlanService.shot("Player2", Point(0, 0))
 
         // Then
         assertEquals(ShotResult.HIT, result)

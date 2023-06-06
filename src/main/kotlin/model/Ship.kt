@@ -7,9 +7,8 @@ data class Ship(
     val ownerName: String,
     var hits: Int= 0,
 ) {
-    fun isSunk(): Boolean {
-        return hits < length
-    }
+    fun isSunk() = hits == length
+
 
     fun hit() {
         hits++
