@@ -1,6 +1,7 @@
 package gameplay
 
 import battleplan.BattlePlanService
+import com.sun.org.apache.xpath.internal.operations.Bool
 import java.util.*
 import model.Player
 import model.Point
@@ -12,6 +13,7 @@ class GameplayServiceImpl(
     private val battlePlanService: BattlePlanService
 ) : GameplayService {
     private lateinit var playerOnTurn: Player
+    private lateinit var winner: Player
     override fun startGame() {
         playerOnTurn = players.first()
         battlePlanService.createBoard(10);
@@ -39,6 +41,14 @@ class GameplayServiceImpl(
 
     override fun whoIsOnTurn(): Player {
         return playerOnTurn
+    }
+
+    override fun isThereWinner(): Boolean {
+        return winner != null;
+    }
+
+    override fun setWinner(player: Player) {
+        winner = player
     }
 
     private fun createPointFromInput(stringInput: String): Point {
