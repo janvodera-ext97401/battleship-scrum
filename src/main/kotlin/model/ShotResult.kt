@@ -1,5 +1,5 @@
 package model
 
 enum class ShotResult {
-    MISS, HIT, SUNK
+    OUT_OF_BOUND, MISS, HIT, SUNK
 }

@@ -42,7 +42,7 @@ class GuiService {
         System.out.flush()
     }
 
-    private fun getShotResultMessage(result: ShotResult): String {
+    private fun getShotResultMessage(result: ShotResult): Any {
         return when (result) {
             ShotResult.HIT -> "          )      )     *     \n" +
                     "   (   ( /(   ( /(   (  `    \n" +
@@ -74,6 +74,8 @@ class GuiService {
                     " | |\\/| || |\\__ \\__ \\\n" +
                     " |_|  |_|___|___/___/\n" +
                     "                     "
+
+            else -> {}
         }
     }
 
