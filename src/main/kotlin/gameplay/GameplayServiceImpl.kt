@@ -15,6 +15,13 @@ class GameplayServiceImpl(private val players: List<Player>,
         TODO("Not yet implemented")
     }
 
+    override fun playerTurn(): Player {
+
+        battlePlanService.shot(playerOnTurn.name, )
+    }
+
+
+
     override fun whoIsOnTurn(): Player {
         return playerOnTurn
     }
