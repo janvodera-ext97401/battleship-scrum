@@ -9,13 +9,7 @@ import model.Ship
 import kotlin.random.Random
 
 
-fun main(args: Array<String>) {
-
-
-    println("Hello World!")
-
-    println("Program arguments: ${args.joinToString()}")
-
+fun main() {
     val players = ArrayList<Player>()
     players.add(Player("player", false))
     players.add(Player("ai", true))

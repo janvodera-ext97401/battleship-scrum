@@ -14,7 +14,9 @@ class GuiService {
     }
 
     fun printWhoPlays(player: Player) {
-        println("It's ${player.name}`s turn now.")
+        this.printDivider()
+        val message = if (player.isNPC) "" else " Input coordinates where to shoot: "
+        println("It's ${player.name}`s turn now." + message)
     }
 
     fun printError() {
@@ -22,7 +24,7 @@ class GuiService {
     }
 
     fun printAIIsTargeting() {
-        println("AI is targeting, please wait...")
+        println("AI is targeting, please wait…")
     }
 
     fun printShot(player: Player, result: ShotResult) {
@@ -79,8 +81,18 @@ class GuiService {
         }
     }
 
+    fun printDivider() {
+        println("~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~")
+    }
+
     private fun getRandomAttackWeaponText(): String {
-        val texts = arrayOf("Missile is flying…", "Torpedo fired!", "Attack!")
+        val texts = arrayOf(
+            "Missile is flying…",
+            "Torpedo fired!",
+            "Attack!",
+            "Shot fired!",
+            "Huuuiiiiii…"
+        )
         val randomIndex = Random.nextInt(texts.size)
         return texts[randomIndex]
     }
