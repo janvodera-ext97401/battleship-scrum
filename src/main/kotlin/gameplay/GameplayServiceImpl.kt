@@ -19,7 +19,7 @@ class GameplayServiceImpl(
     }
 
     override fun endGame() {
-        TODO("Not yet implemented")
+        winner = playerOnTurn;
     }
 
     override fun playerTurn(): ShotResult {
