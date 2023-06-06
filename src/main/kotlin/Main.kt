@@ -2,7 +2,10 @@
 import battleplan.BattlePlanServiceImpl
 import gameplay.GameplayServiceImpl
 import gui.GuiService
+import model.Direction
 import model.Player
+import model.Point
+import model.Ship
 import kotlin.random.Random
 
 
@@ -24,6 +27,26 @@ fun main(args: Array<String>) {
 
     gameplayService.startGame()
     guiService.printBanner()
+
+    players.forEach {
+        val point1 = Point(1, 1)
+        val ship1 = Ship(point1, 1, Direction.HORIZONTAL, it.name)
+
+        val point2 = Point(2, 2)
+        val ship2 = Ship(point2, 2, Direction.HORIZONTAL, it.name)
+
+        val point3 = Point(3, 3)
+        val ship3 = Ship(point3, 3, Direction.HORIZONTAL, it.name)
+
+        val point4 = Point(4, 4)
+        val ship4 = Ship(point4, 4, Direction.HORIZONTAL, it.name)
+
+        battlePlanServiceImpl.addShip(ship1)
+        battlePlanServiceImpl.addShip(ship2)
+        battlePlanServiceImpl.addShip(ship3)
+        battlePlanServiceImpl.addShip(ship4)
+    }
+
     while(!gameplayService.isThereWinner()) {
         val playerOnTurn = gameplayService.whoIsOnTurn()
 
