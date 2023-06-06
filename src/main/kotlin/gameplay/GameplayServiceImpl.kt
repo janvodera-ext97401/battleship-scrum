@@ -1,10 +1,14 @@
 package kotlin.gameplay
 
+import battleplan.BattlePlanService
 import model.Player
 
-class GameplayServiceImpl : GameplayService {
+class GameplayServiceImpl(private val players: List<Player>,
+                          private val battlePlanService: BattlePlanService) : GameplayService {
+    private lateinit var playerOnTurn: Player
     override fun startGame() {
-        TODO("Not yet implemented")
+        playerOnTurn = players.first()
+        battlePlanService.createBoard(10);
     }
 
     override fun endGame() {
@@ -12,6 +16,6 @@ class GameplayServiceImpl : GameplayService {
     }
 
     override fun whoIsOnTurn(): Player {
-        TODO("Not yet implemented")
+        return playerOnTurn
     }
 }
