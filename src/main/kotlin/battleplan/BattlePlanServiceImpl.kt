@@ -13,7 +13,7 @@ class BattlePlanServiceImpl : BattlePlanService {
         TODO("Not yet implemented")
     }
 
-    override fun shot(playerName: String, point: Point) {
+    override fun shot(playerName: String, point: Point): ShotResult {
         TODO("Not yet implemented")
     }
 }

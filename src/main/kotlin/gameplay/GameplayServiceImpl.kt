@@ -1,7 +1,6 @@
 package gameplay
 
 import battleplan.BattlePlanService
-import com.sun.org.apache.xpath.internal.operations.Bool
 import java.util.*
 import model.Player
 import model.Point
