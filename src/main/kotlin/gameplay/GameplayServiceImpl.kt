@@ -12,14 +12,13 @@ class GameplayServiceImpl(
     private val battlePlanService: BattlePlanService
 ) : GameplayService {
     private lateinit var playerOnTurn: Player
-    private lateinit var winner: Player
     override fun startGame() {
         playerOnTurn = players.first()
         battlePlanService.createBoard(10);
     }
 
     override fun endGame() {
-        winner = playerOnTurn;
+        //todo;
     }
 
     override fun playerTurn(): ShotResult {
@@ -43,11 +42,11 @@ class GameplayServiceImpl(
     }
 
     override fun isThereWinner(): Boolean {
-        return winner != null;
+        return false;
     }
 
     override fun setWinner(player: Player) {
-        winner = player
+       // winner = player
     }
 
     private fun createPointFromInput(stringInput: String): Point {
