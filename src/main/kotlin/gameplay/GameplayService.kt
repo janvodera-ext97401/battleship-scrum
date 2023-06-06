@@ -1,4 +1,4 @@
-package kotlin.gameplay
+package gameplay
 
 import model.Player
 
