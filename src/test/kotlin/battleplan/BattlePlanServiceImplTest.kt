@@ -1,6 +1,10 @@
 package battleplan
 
-import model.*
+import model.Direction
+import model.PlacementResult
+import model.Point
+import model.Ship
+import model.ShotResult
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -76,6 +80,22 @@ class BattlePlanServiceImplTest {
 
         // When
         val result = battlePlanService.shot("Player2", Point(0, 0))
+
+        // Then
+        assertEquals(ShotResult.HIT, result)
+    }
+
+    @Test
+    fun `shot should return HIT for opponent when player and opponent ships are on same place`() {
+        battlePlanService.createBoard(10)
+        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player1")
+        val ship2 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player2")
+
+        battlePlanService.addShip(ship)
+        battlePlanService.addShip(ship2)
+
+        // When
+        val result = battlePlanService.shot("Player1", Point(0, 0))
 
         // Then
         assertEquals(ShotResult.HIT, result)
