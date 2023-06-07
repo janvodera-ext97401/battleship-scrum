@@ -1,13 +1,9 @@
-
 import battleplan.BattlePlanServiceImpl
 import gameplay.GameplayServiceImpl
 import gamesettings.GameSettingsServiceImpl
 import gui.GuiService
-import model.Direction
 import model.PlacementResult
 import model.Player
-import model.Point
-import model.Ship
 import model.ShotResult
 import kotlin.random.Random
 
@@ -25,13 +21,11 @@ fun main() {
 
     fun promptUserForInput(): Int {
         guiService.printShipAutoplacementOption()
-        return  gameSettingsService.resolveAutoShipPlacementFunction(System.`in`)
+        return gameSettingsService.resolveAutoShipPlacementFunction(System.`in`)
     }
 
     fun placeShipsForUser(playerName: String) {
-        val ships = listOf(Ship(Point(0,0), 1, Direction.HORIZONTAL, ""))
-
-        ships.forEach {
+        battlePlanServiceImpl.getShipsToPlace().forEach {
             guiService.printQuestionForShipPlacement(it.length)
             val userInput = gameSettingsService.getShipPlacement(System.`in`)
 
@@ -39,7 +33,13 @@ fun main() {
                 guiService.onInvalidShipPlacementInput()
                 return@forEach
             }
-            val result = battlePlanServiceImpl.addShip(it.copy(position = userInput.coordinates, direction =  userInput.direction, ownerName =  playerName))
+            val result = battlePlanServiceImpl.addShip(
+                it.copy(
+                    position = userInput.coordinates,
+                    direction = userInput.direction,
+                    ownerName = playerName
+                )
+            )
 
             if (result != PlacementResult.OK) {
                 guiService.onShipPlacementError(result)
@@ -60,7 +60,7 @@ fun main() {
     do {
         placementMode = promptUserForInput()
         if (placementMode < 1) guiService.printError()
-    } while(placementMode < 1 )
+    } while (placementMode < 1)
 
     when (placementMode) {
         1 -> battlePlanServiceImpl.autoPlaceShips(players.first { !it.isNPC })
@@ -68,7 +68,7 @@ fun main() {
     }
 
 
-    while(!gameplayService.isThereWinner()) {
+    while (!gameplayService.isThereWinner()) {
         val playerOnTurn = gameplayService.whoIsOnTurn()
         val playerNotOnTurn = gameplayService.whoIsNotOnTurn()
 
@@ -83,7 +83,7 @@ fun main() {
             val enemy_battleplan = battlePlanServiceImpl.getBattlePlan(playerNotOnTurn)
             guiService.printBattleplanDescription(true)
             guiService.printBattleplan(enemy_battleplan)
-            
+
             // My battle plan
             val my_battleplan = battlePlanServiceImpl.getBattlePlan(playerOnTurn)
             guiService.printBattleplanDescription(false)
@@ -94,7 +94,7 @@ fun main() {
         if (turnResult != ShotResult.INVALID) {
             guiService.printRandomAttackMessage()
         }
-            guiService.printShot(playerOnTurn, turnResult)
+        guiService.printShot(playerOnTurn, turnResult)
     }
     guiService.printWinner()
 
