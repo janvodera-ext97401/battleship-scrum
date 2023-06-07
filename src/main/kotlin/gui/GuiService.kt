@@ -1,6 +1,6 @@
 package gui
 
-import model.*
+import model.BattlePlan
 import model.FieldType
 import model.PlacementResult
 import model.Player
