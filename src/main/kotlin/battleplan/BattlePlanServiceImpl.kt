@@ -28,7 +28,7 @@ class BattlePlanServiceImpl : BattlePlanService {
         return result
     }
 
-    private fun validateShipPlacement(ship: Ship): PlacementResult{
+    private fun validateShipPlacement(ship: Ship): PlacementResult {
         val shipPoints = generateShipPoints(ship)
         if (ensurePointsAreWithinBounds(shipPoints)){
             return PlacementResult.OUT_OF_BOUND
@@ -49,19 +49,18 @@ class BattlePlanServiceImpl : BattlePlanService {
     }
 
     private fun ensurePointsAreWithinBounds(points: List<Point>): Boolean {
-        points.forEach { point ->
-            if (point.row < 0 || point.row >= boardSize || point.column < 0 || point.column >= boardSize) {
-                return true
-            }
+        return points.any { point ->
+            point.row < 0 || point.row >= boardSize || point.column < 0 || point.column >= boardSize
         }
-        return false
     }
 
     private fun ensureNoOverlapWithCurrentPlayerShips(ship: Ship, shipPoints: List<Point>): Boolean {
-        return ships.any { it.ownerName == ship.ownerName && shipPoints.contains(it.position) }
+        return ships.any { existingShip ->
+            existingShip.ownerName == ship.ownerName && generateShipPoints(existingShip).intersect(shipPoints).isNotEmpty()
+        }
     }
 
-    override fun shot(playerName: String, point: Point): ShotResult{
+    override fun shot(playerName: String, point: Point): ShotResult {
         if (ensurePointIsWithinBounds(point)){
             return ShotResult.OUT_OF_BOUND
         }
@@ -70,33 +69,25 @@ class BattlePlanServiceImpl : BattlePlanService {
         return result
     }
 
-    private fun ensurePointIsWithinBounds(point: Point): Boolean{
-        return (point.row < 0 || point.row >= boardSize || point.column < 0 || point.column >= boardSize)
+    private fun ensurePointIsWithinBounds(point: Point): Boolean {
+        return point.row < 0 || point.row >= boardSize || point.column < 0 || point.column >= boardSize
     }
 
-    private fun recordShotResult(playerName: String, point: Point): ShotResult{
-        val ship = findShipAtPoint(point)
-
-        if (ship == null || ship.ownerName == playerName) {
-            return ShotResult.MISS
+    private fun recordShotResult(playerName: String, point: Point): ShotResult {
+        val opponentShip = ships.find { ship ->
+            generateShipPoints(ship).contains(point) && ship.ownerName != playerName
         }
-
-        ship.hit()
-        if (ship.isSunk()) {
-            return ShotResult.SUNK
-        } else {
-            return ShotResult.HIT
+        if (opponentShip != null) {
+            opponentShip.hit()
+            return if (opponentShip.isSunk()) ShotResult.SUNK else ShotResult.HIT
         }
+        return ShotResult.MISS
     }
+
 
     private fun findShipAtPoint(point: Point): Ship? {
         return ships.find { ship ->
-            (0 until ship.length).any { i ->
-                when (ship.direction) {
-                    Direction.HORIZONTAL -> ship.position == Point(point.row, point.column - i)
-                    Direction.VERTICAL -> ship.position == Point(point.row - i, point.column)
-                }
-            }
+            generateShipPoints(ship).contains(point)
         }
     }
 }
