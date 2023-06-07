@@ -1,3 +1,6 @@
 package model
 
-data class ShipPlacement()
+data class ShipPlacement(
+    val coordinates: Point,
+    val direction: Direction
+)

@@ -1,6 +1,10 @@
 package gui
 
 import model.*
+import model.FieldType
+import model.PlacementResult
+import model.Player
+import model.ShotResult
 import kotlin.random.Random
 
 
@@ -156,5 +160,31 @@ class GuiService {
 
     fun printBattleplanDescription(isEnemy: Boolean) {
         if (isEnemy) println("Enemy sea: ") else println("Your sea: ")
+    }
+
+    fun printShipAutoplacementOption() {
+        println("Do you want to use auto placement feature? Type \"1\" for auto placement, \"2\" for manual placement")
+    }
+
+    fun printQuestionForShipPlacement(shipLength: Int) {
+        println("Please insert the ship placement for ship length $shipLength as follows [ROW,COLUMN,DIRECTION].\n" +
+                "Example: \"A,10,H\". Possible directions are: Horizontal (H) Vertical (V)")
+    }
+
+    fun onShipPlacementError(placement: PlacementResult) {
+        when (placement) {
+            PlacementResult.OUT_OF_BOUND -> println("Ship placement is out of map. Please change coordinates.")
+            PlacementResult.PLACEMENT_CONFLICT -> println("Ship placement conflicts with already placed ship. Please change coordinates")
+            else -> {}
+        }
+    }
+
+    fun onInvalidShipPlacementInput() {
+        println("Invalid ship placement coordinates. Please stick to the [ROW,COLUMN,DIRECTION].\n" +
+                "\"Example: \"A,10,H\". Possible directions are: Horizontal (H) Vertical (V)")
+    }
+
+    fun printShipPlaced() {
+        println("Ship placed!")
     }
 }

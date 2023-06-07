@@ -4,12 +4,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class GameSettingsImplTest {
+class GameSettingsServiceImplTest {
     private lateinit var gameSettingsService: GameSettingsService
 
     @BeforeEach
     fun setup() {
-        gameSettingsService = GameSettingsImpl()
+        gameSettingsService = GameSettingsServiceImpl()
     }
 
     @Test

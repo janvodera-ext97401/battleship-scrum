@@ -1,14 +1,16 @@
 
 import battleplan.BattlePlanServiceImpl
 import gameplay.GameplayServiceImpl
+import gamesettings.GameSettingsServiceImpl
 import gui.GuiService
 import model.Direction
+import model.Field
+import model.FieldType
+import model.PlacementResult
 import model.Player
 import model.Point
 import model.Ship
 import model.ShotResult
-import model.Field
-import model.FieldType
 import kotlin.random.Random
 
 
@@ -21,9 +23,51 @@ fun main() {
     val battlePlanServiceImpl = BattlePlanServiceImpl()
     val guiService = GuiService()
     val gameplayService = GameplayServiceImpl(players, battlePlanServiceImpl)
+    val gameSettingsService = GameSettingsServiceImpl()
+
+    fun promptUserForInput(): Int {
+        guiService.printShipAutoplacementOption()
+        return  gameSettingsService.resolveAutoShipPlacementFunction(System.`in`)
+    }
+
+    fun placeShipsForUser(playerName: String) {
+        val ships = listOf(Ship(Point(0,0), 1, Direction.HORIZONTAL, ""))
+
+        ships.forEach {
+            guiService.printQuestionForShipPlacement(it.length)
+            val userInput = gameSettingsService.getShipPlacement(System.`in`)
+
+            if (userInput == null) {
+                guiService.onInvalidShipPlacementInput()
+                return@forEach
+            }
+            val result = battlePlanServiceImpl.addShip(it.copy(position = userInput.coordinates, direction =  userInput.direction, ownerName =  playerName))
+
+            if (result != PlacementResult.OK) {
+                guiService.onShipPlacementError(result)
+                return@forEach
+            } else {
+                guiService.printShipPlaced()
+            }
+        }
+    }
+
+
 
     gameplayService.startGame()
     guiService.printBanner()
+
+    var placementMode = 0
+    do {
+        placementMode = promptUserForInput()
+        if (placementMode < 1) guiService.printError()
+    } while(placementMode < 1 )
+
+    when (placementMode) {
+        1 -> println("")//battlePlanServiceImpl.placeShips
+        2 -> placeShipsForUser(players.first { !it.isNPC }.name)
+    }
+
 
     players.forEach {
         val point1 = Point(1, 1)
@@ -73,7 +117,9 @@ fun main() {
             guiService.printShot(playerOnTurn, turnResult)
     }
     guiService.printWinner()
+
 }
+
 
 
 
