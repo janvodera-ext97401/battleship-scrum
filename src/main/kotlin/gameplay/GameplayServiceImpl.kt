@@ -1,7 +1,6 @@
 package gameplay
 
 import battleplan.BattlePlanService
-import java.util.*
 import model.Player
 import model.Point
 import model.ShotResult
@@ -25,7 +24,7 @@ class GameplayServiceImpl(
         val shotCoordinates = when (playerOnTurn.isNPC) {
             true -> createRandomPoint()
             false -> createPointFromInput(readln())
-        }
+        } ?: return ShotResult.INVALID
 
         return when (val result = battlePlanService.shot(playerOnTurn.name, shotCoordinates)) {
             ShotResult.MISS -> {
@@ -49,15 +48,24 @@ class GameplayServiceImpl(
        // winner = player
     }
 
-    private fun createPointFromInput(stringInput: String): Point {
+    private fun createPointFromInput(stringInput: String): Point? {
         val alphabet = "abcdefghijklmnopqrstuvwxyz";
+        val coordinates = stringInput.split(",")
 
-        val firstChar = stringInput.substring(0, 1).lowercase(Locale.getDefault());
-        val firstIndex = alphabet.indexOf(firstChar);
-        val secondChar = stringInput.substring(1, 2);
-        val secondIndex = Integer.parseInt(secondChar) - 1;
+        if (coordinates.size != 2) return null
 
-        return Point(firstIndex, secondIndex)
+        val rowChar = coordinates.first().lowercase()
+        val rowNum = alphabet.indexOf(rowChar)
+
+        if (rowNum == -1) return null
+
+        val columnChar = coordinates.component2()
+
+        val columnNum = Integer.parseInt(columnChar) - 1
+
+        if (columnNum < 0) return null
+
+        return Point(rowNum, columnNum)
     }
 
     private fun createRandomPoint(): Point {

@@ -26,7 +26,7 @@ class GuiService {
         if (player.isNPC) {
             println("${player.name} is targeting, please wait…")
         } else {
-            println("It's ${player.name}`s turn now. Input coordinates where to shoot: ")
+            println("It's ${player.name}`s turn now. Input coordinates where to shoot in format \"A,3\": ")
         }
     }
 
@@ -36,7 +36,6 @@ class GuiService {
 
     fun printShot(player: Player, result: ShotResult) {
         val shotResultMessage = getShotResultMessage(result)
-        println(this.getRandomAttackWeaponText())
         if (player.isNPC) {
             println("<–––––––––––––––")
         } else {
@@ -95,7 +94,8 @@ class GuiService {
                     " |_|  |_|___|___/___/\n" +
                     "                     "
 
-            else -> {}
+            ShotResult.OUT_OF_BOUND -> "Coordinates are out of map, Commander! Select new coordinates."
+            else -> "Coordinates are in invalid format, stick to the \"A,3\" format."
         }
     }
 
@@ -103,7 +103,7 @@ class GuiService {
         println("~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~")
     }
 
-    private fun getRandomAttackWeaponText(): String {
+    fun printRandomAttackMessage() {
         val texts = arrayOf(
             "Missile is flying…",
             "Torpedo fired!",
@@ -112,7 +112,7 @@ class GuiService {
             "Huuuiiiiii…"
         )
         val randomIndex = Random.nextInt(texts.size)
-        return texts[randomIndex]
+        println(texts[randomIndex])
     }
 
     fun printWinner() {

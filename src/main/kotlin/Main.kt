@@ -6,6 +6,7 @@ import model.Direction
 import model.Player
 import model.Point
 import model.Ship
+import model.ShotResult
 import kotlin.random.Random
 
 
@@ -49,9 +50,12 @@ fun main() {
         if (playerOnTurn.isNPC) {
             Thread.sleep(Random.nextLong(2000, 6000))
         }
-        // TODO probably return shotResult from playerTurn or shotResult, with current player
+
         val turnResult = gameplayService.playerTurn()
-        guiService.printShot(playerOnTurn, turnResult)
+        if (turnResult != ShotResult.INVALID) {
+            guiService.printRandomAttackMessage()
+        }
+            guiService.printShot(playerOnTurn, turnResult)
     }
     guiService.printWinner()
 }
