@@ -1,7 +1,7 @@
 package model
 
 enum class FieldType {
-    WATER, MISS, HIT, SUNK
+    WATER, MISS, HIT, SUNK, SHIP
 }
 
-data class Field(val fieldType: FieldType)
+data class Field(var fieldType: FieldType)

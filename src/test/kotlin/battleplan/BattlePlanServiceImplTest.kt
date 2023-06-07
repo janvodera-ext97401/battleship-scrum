@@ -1,10 +1,6 @@
 package battleplan
 
-import model.Direction
-import model.PlacementResult
-import model.Point
-import model.Ship
-import model.ShotResult
+import model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -60,8 +56,10 @@ class BattlePlanServiceImplTest {
     fun `addShip should return PLACEMENT_CONFLICT when ship is placed on another ship`() {
         // Given
         battlePlanService.createBoard(10)
-        val ship1 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player1")
-        val ship2 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player1")
+        val player1 = Player("Player1", false)
+
+        val ship1 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player1.name)
+        val ship2 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player1.name)
 
         // When
         battlePlanService.addShip(ship1)
@@ -75,11 +73,14 @@ class BattlePlanServiceImplTest {
     fun `shot should return HIT when a ship is hit`() {
         // Given
         battlePlanService.createBoard(10)
-        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player1")
+        val player1 = Player("Player1", false)
+        val player2 = Player("Player2", true)
+
+        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player1.name)
         battlePlanService.addShip(ship)
 
         // When
-        val result = battlePlanService.shot("Player2", Point(0, 0))
+        val result = battlePlanService.shot(player2, Point(0, 0))
 
         // Then
         assertEquals(ShotResult.HIT, result)
@@ -88,14 +89,18 @@ class BattlePlanServiceImplTest {
     @Test
     fun `shot should return HIT for opponent when player and opponent ships are on same place`() {
         battlePlanService.createBoard(10)
-        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player1")
-        val ship2 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player2")
+        val player1 = Player("Player1", false)
+        val player2 = Player("Player2", true)
+
+
+        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player1.name)
+        val ship2 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player2.name)
 
         battlePlanService.addShip(ship)
         battlePlanService.addShip(ship2)
 
         // When
-        val result = battlePlanService.shot("Player1", Point(0, 0))
+        val result = battlePlanService.shot(player1, Point(0, 0))
 
         // Then
         assertEquals(ShotResult.HIT, result)
@@ -105,11 +110,12 @@ class BattlePlanServiceImplTest {
     fun `shot should return MISS when no ship is hit`() {
         // Given
         battlePlanService.createBoard(10)
-        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player1")
+        val player = Player("Player1", false)
+        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player.name)
         battlePlanService.addShip(ship)
 
         // When
-        val result = battlePlanService.shot("Player1", Point(5, 5))
+        val result = battlePlanService.shot(player, Point(5, 5))
 
         // Then
         assertEquals(ShotResult.MISS, result)
@@ -119,11 +125,13 @@ class BattlePlanServiceImplTest {
     fun `shot should return OUT_OF_BOUND when shot is outside of board boundaries`() {
         // Given
         battlePlanService.createBoard(10)
-        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, "Player1")
+        val player = Player("Player1", false)
+
+        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player.name)
         battlePlanService.addShip(ship)
 
         // When
-        val result = battlePlanService.shot("Player1", Point(10, 10))
+        val result = battlePlanService.shot(player, Point(10, 10))
 
         // Then
         assertEquals(ShotResult.OUT_OF_BOUND, result)

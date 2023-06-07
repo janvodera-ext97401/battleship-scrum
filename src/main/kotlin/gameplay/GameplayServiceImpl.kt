@@ -26,7 +26,7 @@ class GameplayServiceImpl(
             false -> createPointFromInput(readln())
         } ?: return ShotResult.INVALID
 
-        return when (val result = battlePlanService.shot(playerOnTurn.name, shotCoordinates)) {
+        return when (val result = battlePlanService.shot(playerOnTurn, shotCoordinates)) {
             ShotResult.MISS -> {
                 playerOnTurn = players.filterNot { player -> player == playerOnTurn }.first()
                 result

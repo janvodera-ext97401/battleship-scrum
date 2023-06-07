@@ -150,6 +150,7 @@ class GuiService {
                     FieldType.MISS -> "o"
                     FieldType.HIT -> "X"
                     FieldType.SUNK -> "#"
+                    FieldType.SHIP -> "H"
                 }
             }
             println("${rowHeaders[rowIndex]}  $rowString")

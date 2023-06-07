@@ -1,10 +1,10 @@
 package model
 
 data class Ship(
-    val position: Point,
+    var position: Point,
     val length: Int,
-    val direction: Direction,
-    val ownerName: String,
+    var direction: Direction,
+    var ownerName: String,
     var hits: Int= 0,
 ) {
     fun isSunk() = hits == length
