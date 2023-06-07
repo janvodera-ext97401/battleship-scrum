@@ -53,6 +53,7 @@ fun main() {
         val turnResult = gameplayService.playerTurn()
         guiService.printShot(playerOnTurn, turnResult)
     }
+    guiService.printWinner()
 }
 
 
