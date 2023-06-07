@@ -1,5 +1,7 @@
 package gui
 
+import model.Field
+import model.FieldType
 import model.Player
 import model.ShotResult
 import kotlin.random.Random
@@ -133,5 +135,19 @@ class GuiService {
                 "╚███╔███╔╝██║██║ ╚████║██║ ╚████║███████╗██║  ██║\n" +
                 " ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝\n" +
                 "                                                 ")
+    }
+
+    fun printBattleplan(battleplan: List<List<Field>>) {
+        battleplan.forEach { row ->
+            val rowString = row.joinToString(" ") { field ->
+                when (field.fieldType) {
+                    FieldType.WATER -> "~"
+                    FieldType.MISS -> "o"
+                    FieldType.HIT -> "X"
+                    FieldType.SUNK -> "#"
+                }
+            }
+            println(rowString)
+        }
     }
 }

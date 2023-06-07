@@ -7,6 +7,8 @@ import model.Player
 import model.Point
 import model.Ship
 import model.ShotResult
+import model.Field
+import model.FieldType
 import kotlin.random.Random
 
 
@@ -49,6 +51,16 @@ fun main() {
 
         if (playerOnTurn.isNPC) {
             Thread.sleep(Random.nextLong(2000, 6000))
+        }
+
+        if (!playerOnTurn.isNPC) {
+            // TODO replace this mock to actual battleplan data
+            val battleplan = listOf(
+                listOf(Field(FieldType.WATER), Field(FieldType.WATER), Field(FieldType.HIT)),
+                listOf(Field(FieldType.MISS), Field(FieldType.WATER), Field(FieldType.SUNK)),
+                listOf(Field(FieldType.HIT), Field(FieldType.SUNK), Field(FieldType.HIT))
+            )
+            guiService.printBattleplan(battleplan)
         }
 
         val turnResult = gameplayService.playerTurn()
