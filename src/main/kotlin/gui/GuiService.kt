@@ -147,7 +147,7 @@ class GuiService {
         battleplan.fields.forEachIndexed { rowIndex, row ->
             val rowString = row.joinToString(" ") { field ->
                 when (field.fieldType) {
-                    FieldType.WATER -> "~"
+                    FieldType.WATER -> " "
                     FieldType.MISS -> "o"
                     FieldType.HIT -> "X"
                     FieldType.SUNK -> "#"
