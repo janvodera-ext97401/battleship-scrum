@@ -1,9 +1,6 @@
 package gui
 
-import model.Field
-import model.FieldType
-import model.Player
-import model.ShotResult
+import model.*
 import kotlin.random.Random
 
 
@@ -137,13 +134,13 @@ class GuiService {
                 "                                                 ")
     }
 
-    fun printBattleplan(battleplan: List<List<Field>>) {
-        val columnHeaders = ('A'..'Z').take(battleplan.firstOrNull()?.size ?: 0)
-        val rowHeaders = (1..battleplan.size).joinToString("")
+    fun printBattleplan(battleplan: BattlePlan) {
+        val columnHeaders = ('A'..'Z').take(battleplan.fields.firstOrNull()?.size ?: 0)
+        val rowHeaders = (1..battleplan.fields.size).joinToString("")
 
         println("   ${columnHeaders.joinToString(" ")}")
 
-        battleplan.forEachIndexed { rowIndex, row ->
+        battleplan.fields.forEachIndexed { rowIndex, row ->
             val rowString = row.joinToString(" ") { field ->
                 when (field.fieldType) {
                     FieldType.WATER -> "~"
@@ -155,5 +152,9 @@ class GuiService {
             }
             println("${rowHeaders[rowIndex]}  $rowString")
         }
+    }
+
+    fun printBattleplanDescription(isEnemy: Boolean) {
+        if (isEnemy) println("Enemy sea: ") else println("Your sea: ")
     }
 }

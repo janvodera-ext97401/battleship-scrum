@@ -46,6 +46,7 @@ fun main() {
 
     while(!gameplayService.isThereWinner()) {
         val playerOnTurn = gameplayService.whoIsOnTurn()
+        val playerNotOnTurn = gameplayService.whoIsNotOnTurn()
 
         guiService.printWhoPlays(playerOnTurn)
 
@@ -54,13 +55,15 @@ fun main() {
         }
 
         if (!playerOnTurn.isNPC) {
-            // TODO replace this mock to actual battleplan data
-            val battleplan = listOf(
-                listOf(Field(FieldType.WATER), Field(FieldType.WATER), Field(FieldType.HIT)),
-                listOf(Field(FieldType.MISS), Field(FieldType.WATER), Field(FieldType.SUNK)),
-                listOf(Field(FieldType.HIT), Field(FieldType.SUNK), Field(FieldType.HIT))
-            )
-            guiService.printBattleplan(battleplan)
+            // Enemy's battle plan
+            val enemy_battleplan = battlePlanServiceImpl.getBattlePlan(playerNotOnTurn)
+            guiService.printBattleplanDescription(true)
+            guiService.printBattleplan(enemy_battleplan)
+            
+            // My battle plan
+            val my_battleplan = battlePlanServiceImpl.getBattlePlan(playerOnTurn)
+            guiService.printBattleplanDescription(false)
+            guiService.printBattleplan(my_battleplan)
         }
 
         val turnResult = gameplayService.playerTurn()

@@ -11,8 +11,10 @@ class GameplayServiceImpl(
     private val battlePlanService: BattlePlanService
 ) : GameplayService {
     private lateinit var playerOnTurn: Player
+    private lateinit var playerNotOnTurn: Player
     override fun startGame() {
         playerOnTurn = players.first()
+        playerNotOnTurn = players.first { player -> player != playerOnTurn }
         battlePlanService.createBoard(10);
     }
 
@@ -38,6 +40,10 @@ class GameplayServiceImpl(
 
     override fun whoIsOnTurn(): Player {
         return playerOnTurn
+    }
+
+    override fun whoIsNotOnTurn(): Player {
+        return playerNotOnTurn
     }
 
     override fun isThereWinner(): Boolean {
