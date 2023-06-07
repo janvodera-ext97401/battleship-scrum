@@ -138,7 +138,12 @@ class GuiService {
     }
 
     fun printBattleplan(battleplan: List<List<Field>>) {
-        battleplan.forEach { row ->
+        val columnHeaders = ('A'..'Z').take(battleplan.firstOrNull()?.size ?: 0)
+        val rowHeaders = (1..battleplan.size).joinToString("")
+
+        println("   ${columnHeaders.joinToString(" ")}")
+
+        battleplan.forEachIndexed { rowIndex, row ->
             val rowString = row.joinToString(" ") { field ->
                 when (field.fieldType) {
                     FieldType.WATER -> "~"
@@ -147,7 +152,7 @@ class GuiService {
                     FieldType.SUNK -> "#"
                 }
             }
-            println(rowString)
+            println("${rowHeaders[rowIndex]}  $rowString")
         }
     }
 }
