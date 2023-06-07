@@ -139,8 +139,8 @@ class GuiService {
     }
 
     fun printBattleplan(battleplan: BattlePlan) {
-        val columnHeaders = ('A'..'Z').take(battleplan.fields.firstOrNull()?.size ?: 0)
-        val rowHeaders = (1..battleplan.fields.size).joinToString("")
+        val rowHeaders = ('A'..'Z').take(battleplan.fields.firstOrNull()?.size ?: 0)
+        val columnHeaders = (1..battleplan.fields.size)
 
         println("   ${columnHeaders.joinToString(" ")}")
 
