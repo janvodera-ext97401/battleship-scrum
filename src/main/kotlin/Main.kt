@@ -47,7 +47,6 @@ fun main() {
         guiService.printWhoPlays(playerOnTurn)
 
         if (playerOnTurn.isNPC) {
-            guiService.printAIIsTargeting()
             Thread.sleep(Random.nextLong(2000, 6000))
         }
         // TODO probably return shotResult from playerTurn or shotResult, with current player

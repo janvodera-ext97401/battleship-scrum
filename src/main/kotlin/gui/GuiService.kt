@@ -4,27 +4,34 @@ import model.Player
 import model.ShotResult
 import kotlin.random.Random
 
+
 class GuiService {
     fun printBanner() {
+        println("Welcome to glorious")
         println("                 __/___\n" +
                 "           _____/______|\n" +
                 "   _______/_____\\_______\\_____\n" +
                 "   \\              < < <       |\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println("__________         __    __  .__                .__    .__              \n" +
+                "\\______   \\_____ _/  |__/  |_|  |   ____   _____|  |__ |__|_____  ______\n" +
+                " |    |  _/\\__  \\\\   __\\   __\\  | _/ __ \\ /  ___/  |  \\|  \\____ \\/  ___/\n" +
+                " |    |   \\ / __ \\|  |  |  | |  |_\\  ___/ \\___ \\|   Y  \\  |  |_> >___ \\ \n" +
+                " |______  /(____  /__|  |__| |____/\\___  >____  >___|  /__|   __/____  >\n" +
+                "        \\/      \\/                     \\/     \\/     \\/   |__|       \\/ ")
     }
 
     fun printWhoPlays(player: Player) {
         this.printDivider()
-        val message = if (player.isNPC) "" else " Input coordinates where to shoot: "
-        println("It's ${player.name}`s turn now." + message)
+        if (player.isNPC) {
+            println("${player.name} is targeting, please wait…")
+        } else {
+            println("It's ${player.name}`s turn now. Input coordinates where to shoot: ")
+        }
     }
 
     fun printError() {
         println("This action is invalid, try again.")
-    }
-
-    fun printAIIsTargeting() {
-        println("AI is targeting, please wait…")
     }
 
     fun printShot(player: Player, result: ShotResult) {
@@ -40,7 +47,18 @@ class GuiService {
     }
 
     fun clearConsole() {
-        println("\\033[H\\033[2J")
+        // This seems to not work in IDE terminal
+        try {
+            val os = System.getProperty("os.name")
+            if (os.contains("Windows")) {
+                val cls = arrayOf("cmd.exe", "/c", "cls")
+                Runtime.getRuntime().exec(cls)
+            } else {
+                Runtime.getRuntime().exec("clear")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         System.out.flush()
     }
 
