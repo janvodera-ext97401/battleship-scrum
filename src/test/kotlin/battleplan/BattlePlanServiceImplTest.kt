@@ -2,6 +2,7 @@ package battleplan
 
 import model.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -136,4 +137,85 @@ class BattlePlanServiceImplTest {
         // Then
         assertEquals(ShotResult.OUT_OF_BOUND, result)
     }
+
+    @Test
+    fun `autoPlaceShips should return true when ships are placed`() {
+        // Given
+        battlePlanService.createBoard(10)
+        val player = Player("Player1", false)
+
+        // When
+        val result = battlePlanService.autoPlaceShips(player)
+
+        // Then
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun `getBattlePlan should return a BattlePlan`() {
+        // Given
+        battlePlanService.createBoard(10)
+        val player = Player("Player1", false)
+        val ship = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player.name)
+        battlePlanService.addShip(ship)
+
+        // When
+        val result = battlePlanService.getBattlePlan(player)
+
+        // Then
+        assertNotNull(result)
+        assertEquals(FieldType.SHIP, result.fields[0][0].fieldType)
+    }
+
+    @Test
+    fun `shot should return SUNK when last part of a ship is hit`() {
+        // Given
+        battlePlanService.createBoard(10)
+        val player1 = Player("Player1", false)
+        val player2 = Player("Player2", true)
+
+        val ship = Ship(Point(0, 0), 1, Direction.HORIZONTAL, player1.name)
+        battlePlanService.addShip(ship)
+
+        // When
+        val result = battlePlanService.shot(player2, Point(0, 0))
+
+        // Then
+        assertEquals(ShotResult.SUNK, result)
+    }
+
+    @Test
+    fun `addShip should return OK when ship is placed next to another ship`() {
+        // Given
+        battlePlanService.createBoard(10)
+        val player1 = Player("Player1", false)
+
+        val ship1 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player1.name)
+        val ship2 = Ship(Point(0, 4), 3, Direction.HORIZONTAL, player1.name)
+
+        // When
+        battlePlanService.addShip(ship1)
+        val result = battlePlanService.addShip(ship2)
+
+        // Then
+        assertEquals(PlacementResult.OK, result)
+    }
+
+    @Test
+    fun `addShip should return PLACEMENT_CONFLICT when ship is placed adjacent to another ship`() {
+        // Given
+        battlePlanService.createBoard(10)
+        val player1 = Player("Player1", false)
+
+        val ship1 = Ship(Point(0, 0), 3, Direction.HORIZONTAL, player1.name)
+        val ship2 = Ship(Point(0, 3), 3, Direction.HORIZONTAL, player1.name)
+
+        // When
+        battlePlanService.addShip(ship1)
+        val result = battlePlanService.addShip(ship2)
+
+        // Then
+        assertEquals(PlacementResult.PLACEMENT_CONFLICT, result)
+    }
+
 }
