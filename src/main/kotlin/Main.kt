@@ -56,7 +56,7 @@ fun main() {
     guiService.printBanner()
     battlePlanServiceImpl.autoPlaceShips(players.first { it.isNPC })
 
-    var placementMode = 0
+    var placementMode: Int
     do {
         placementMode = promptUserForInput()
         if (placementMode < 1) guiService.printError()
@@ -79,15 +79,10 @@ fun main() {
         }
 
         if (!playerOnTurn.isNPC) {
-            // Enemy's battle plan
             val enemy_battleplan = battlePlanServiceImpl.getBattlePlan(playerNotOnTurn)
-            guiService.printBattleplanDescription(true)
-            guiService.printBattleplan(enemy_battleplan)
-
-            // My battle plan
             val my_battleplan = battlePlanServiceImpl.getBattlePlan(playerOnTurn)
-            guiService.printBattleplanDescription(false)
-            guiService.printBattleplan(my_battleplan)
+
+            guiService.printBattleplans(my_battleplan, enemy_battleplan)
         }
 
         val turnResult = gameplayService.playerTurn()

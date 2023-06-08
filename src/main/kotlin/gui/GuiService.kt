@@ -138,14 +138,16 @@ class GuiService {
                 "                                                 ")
     }
 
-    fun printBattleplan(battleplan: BattlePlan) {
-        val rowHeaders = ('A'..'Z').take(battleplan.fields.firstOrNull()?.size ?: 0)
-        val columnHeaders = (1..battleplan.fields.size)
+    fun printBattleplans(ownBattleplan: BattlePlan, enemyBattleplan: BattlePlan) {
+        val rowHeaders = ('A'..'Z').take(ownBattleplan.fields.firstOrNull()?.size ?: 0)
+        val columnHeaders = (1..ownBattleplan.fields.size)
 
-        println("   ${columnHeaders.joinToString(" ")}")
 
-        battleplan.fields.forEachIndexed { rowIndex, row ->
-            val rowString = row.joinToString(" ") { field ->
+        println("Your sea:                   Enemy sea:")
+        println("   ${columnHeaders.joinToString(" ")}   ${columnHeaders.joinToString(" ")}")
+
+        ownBattleplan.fields.forEachIndexed { rowIndex, row ->
+            val rowString1 = row.joinToString(" ") { field ->
                 when (field.fieldType) {
                     FieldType.WATER -> " "
                     FieldType.MISS -> "o"
@@ -154,12 +156,17 @@ class GuiService {
                     FieldType.SHIP -> "H"
                 }
             }
-            println("${rowHeaders[rowIndex]}  $rowString")
+            val rowString2 = enemyBattleplan.fields[rowIndex].joinToString(" ") { field ->
+                when (field.fieldType) {
+                    FieldType.WATER -> " "
+                    FieldType.MISS -> "o"
+                    FieldType.HIT -> "X"
+                    FieldType.SUNK -> "#"
+                    FieldType.SHIP -> "H"
+                }
+            }
+            println("${rowHeaders[rowIndex]} $rowString1         ${rowHeaders[rowIndex]} $rowString2")
         }
-    }
-
-    fun printBattleplanDescription(isEnemy: Boolean) {
-        if (isEnemy) println("Enemy sea: ") else println("Your sea: ")
     }
 
     fun printShipAutoplacementOption() {
